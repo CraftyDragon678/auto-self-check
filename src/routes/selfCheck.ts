@@ -25,7 +25,7 @@ router.get(
         ).data.schoolInfo.orgCode;
 
         const birthday = (
-            await db.query('SELECT birthday FROM users WHERE name = $1 AND schoolCode = $2;', [name, schoolCode])
+            await db.query('SELECT birthday FROM users WHERE name = $1 AND schoolCode = $2 AND year = $3;', [name, schoolCode, year])
         ).rows[0]?.birthday;
 
         if (!birthday) {
@@ -34,8 +34,8 @@ router.get(
             ).data.birthday[0];
 
             await db.query(
-                'INSERT INTO users (name, birthday, schoolCode) VALUES ($1, $2, $3);',
-                [name, birthday, schoolCode]
+                'INSERT INTO users (name, birthday, schoolCode, year) VALUES ($1, $2, $3, $4);',
+                [name, birthday, schoolCode, year]
             );
             res.redirect(req.originalUrl);
         }
