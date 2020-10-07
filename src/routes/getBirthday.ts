@@ -64,7 +64,6 @@ router.post(
         const birthday = await getBirthday({name, schoolCode, year});
         if (!birthday.length) throw new Error("birthday not found");
         res.json({birthday});
-        console.log(birthday);
         return;
     }),
 );
