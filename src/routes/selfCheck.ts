@@ -21,7 +21,7 @@ router.get(
         if (!name || !year || !region || !level || !query) throw new Error("query error");
 
         const schoolCode = (
-            await axios.post('http://localhost:2932/getSchoolInfo', {region, level, query})
+            await axios.post('https://n1net4il.kr:2932/getSchoolInfo', {region, level, query})
         ).data.schoolInfo.orgCode;
 
         const birthday = (
@@ -30,7 +30,7 @@ router.get(
 
         if (!birthday) {
             const birthday = (
-                await axios.post('http://localhost:2932/getBirthday', {name, schoolCode, year})
+                await axios.post('https://n1net4il.kr:2932/getBirthday', {name, schoolCode, year})
             ).data.birthday[0];
 
             await db.query(
@@ -42,7 +42,7 @@ router.get(
 
         const token = (
             await axios.post(
-                'http://localhost:2932/getUserInfo',
+                'https://n1net4il.kr:2932/getUserInfo',
                 {
                     "name": name!.replace('A', '').replace('B', ''),
                     "birthday": birthday,
@@ -53,7 +53,7 @@ router.get(
 
         const registerTime = (
             await axios.post(
-                'http://localhost:2932/registerSurvey',
+                'https://n1net4il.kr:2932/registerSurvey',
                 {
                     "name": name!.replace('A', '').replace('B', ''),
                     "token": token,
@@ -61,7 +61,7 @@ router.get(
             )
         ).data.registerTime;
 
-        res.send("<h1> SUCCESS! </h1>");
+        res.json({success: true});
         return;
     })
 );
