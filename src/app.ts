@@ -1,31 +1,19 @@
-import express from 'express'
+import express from 'express';
+import bodyParser from 'body-parser';
+import helmet from 'helmet';
 import cors from 'cors';
+import morgan from 'morgan';
 
-import CONFIG from './config'
-import setRoute from './router'
+import setRoute from './routes';
 
-const app = express()
+const app = express();
 
-app.use(express.json());
-app.use(cors({ credentials: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(helmet());
+app.use(cors());
+app.use(morgan((tokens, req, res) => `${tokens['remote-addr'](req, res)} - [${tokens['date'](req, res)}] ${tokens.method(req, res)} ${decodeURI(tokens.url(req, res)!)} ${tokens.status(req, res)} - ${tokens['response-time'](req, res)} ms`));
 
-app.use((req, res, next) => {
-    console.log(req.ip, req.originalUrl);
-    next();
-})
+setRoute(app);
 
-setRoute(app)
-
-const l = app.listen(CONFIG.port, () => {
-    console.log(`Listening on port ${CONFIG.port}`);
-    if (process.send) {
-        process.send!('ready');
-    }
-});
-
-process.on('SIGINT', () => {
-    l.close(() => {
-        console.log('Recieved SIGINT');
-        process.exit(0);
-    });
-});
+export default app;
