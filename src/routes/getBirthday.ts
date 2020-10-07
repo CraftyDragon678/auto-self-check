@@ -6,16 +6,16 @@ import { encryptor } from '../utils';
 
 const router = Router();
 
-const pad2 = (num: Number): string => num.toString().padStart(2, '0')
-const formatDate = (date: Date): string => pad2(date.getFullYear() - 2000) + pad2(date.getMonth() + 1) + pad2(date.getDate())
+const pad2 = (num: Number): string => num.toString().padStart(2, '0');
+const formatDate = (date: Date): string => pad2(date.getFullYear() - 2000) + pad2(date.getMonth() + 1) + pad2(date.getDate());
 const checkBirthday = async ({
     name,
     date,
-    schoolCode
+    schoolCode,
 }: {
     name: string,
     date: string,
-    schoolCode: string
+    schoolCode: string,
 }): Promise<string | false> => {
     try {
         await axios.post(
@@ -26,7 +26,7 @@ const checkBirthday = async ({
                 "birthday": encryptor.encrypt(date),
                 "stdntPNo": null,
                 "loginType": "school",
-            }
+            },
         )
         return date;
     } catch {
@@ -37,11 +37,11 @@ const checkBirthday = async ({
 const getBirthday = async({
     name,
     schoolCode,
-    year
+    year,
 }: {
     name: string,
     schoolCode: string,
-    year: number
+    year: number,
 }): Promise<string[]> => {
     const baseDate = Number(new Date(year));
     const result: string[] = (

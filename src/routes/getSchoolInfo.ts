@@ -11,11 +11,11 @@ const router = Router();
 const getSchoolInfo = async ({
     region,
     level,
-    query
+    query,
 }: {
     region: keyof typeof Region,
     level: keyof typeof Level,
-    query: string
+    query: string,
 }): Promise<SchoolInfo[]> => {
     const result: SchoolInfo[] = (
         await axios.get(

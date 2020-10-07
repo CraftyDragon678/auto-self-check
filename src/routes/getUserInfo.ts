@@ -11,11 +11,11 @@ const router = Router();
 const getUserInfo = async ({
     name,
     birthday,
-    schoolCode
+    schoolCode,
 }: {
     name: string,
     birthday: string,
-    schoolCode: string
+    schoolCode: string,
 }): Promise<UserInfo> => {
         const userInfo: UserInfo = (
             await axios.post(

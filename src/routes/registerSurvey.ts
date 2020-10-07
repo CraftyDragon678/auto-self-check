@@ -7,10 +7,10 @@ const router = Router();
 
 const registerSurvey = async ({
     name,
-    token
+    token,
 }: {
     name: string,
-    token: string
+    token: string,
 }): Promise<string> => {
     const registerTime = (
         await axios.post(
@@ -34,7 +34,7 @@ const registerSurvey = async ({
                 "rspns15": null,
                 "deviceUuid": "",
                 "upperToken": token,
-                "upperUserNameEncpt": name
+                "upperUserNameEncpt": name,
             },
             {
                 headers: {
