@@ -1,21 +1,19 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import helmet from 'helmet';
 import cors from 'cors';
+import morgan from 'morgan';
 
-import CONFIG from './config';
 import setRoute from './routes';
 
 const app = express();
 
-app.use(express.json());
-app.use(cors({ credentials: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(helmet());
+app.use(cors());
+app.use(morgan((tokens, req, res) => `${tokens['remote-addr'](req, res)} - [${tokens['date'](req, res)}] ${tokens.method(req, res)} ${decodeURI(tokens.url(req, res)!)} ${tokens.status(req, res)} - ${tokens['response-time'](req, res)} ms`));
 
-app.use((req, res, next) => {
-    console.log(req.ip, decodeURI(req.originalUrl));
-    next();
-});
+setRoute(app);
 
-setRoute(app)
-
-app.listen(CONFIG.web.port, () => {
-    console.log(`Listening on port ${CONFIG.web.port}`);
-});
+export default app;
